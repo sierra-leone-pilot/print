@@ -1,5 +1,8 @@
 package io.mosip.print.controller;
 
+import io.mosip.print.dto.BaseRequestDTO;
+import io.mosip.print.dto.BaseResponseDTO;
+import io.mosip.print.dto.PrintStatusRequestDto;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,4 +49,17 @@ public class Print {
 		return new ResponseEntity<>("request accepted.", HttpStatus.OK);
 	}
 
+	/**
+	 * Update Print Transaction Status.
+	 *
+	 * @param requestModel the print request DTO
+	 * @return the file
+	 * @throws Exception
+	 * @throws RegPrintAppException the reg print app exception
+	 */
+	@PostMapping(path = "/printtransaction/status", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BaseResponseDTO> updatePrintTransactionStatus(@RequestBody BaseRequestDTO<PrintStatusRequestDto> requestModel) throws Exception {
+		BaseResponseDTO baseResponseDTO = printService.updatePrintTransactionStatus(requestModel.getRequest());
+		return ResponseEntity.ok(baseResponseDTO);
+	}
 }
