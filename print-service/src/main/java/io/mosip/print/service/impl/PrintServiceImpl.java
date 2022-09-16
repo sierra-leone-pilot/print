@@ -286,7 +286,7 @@ public class PrintServiceImpl implements PrintService{
             if (emailUINEnabled) {
                 sendUINInEmail(emailId, registrationId, attributes, pdfbytes);
             }
-			printStatusUpdate(requestId, Base64.encodeBase64(pdfbytes), credentialType, uin, refId, registrationId);
+			printStatusUpdate(requestId, pdfbytes, credentialType, uin, refId, registrationId);
 			isTransactionSuccessful = true;
 		}
 		catch (QrcodeGenerationException e) {
