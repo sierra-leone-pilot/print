@@ -676,8 +676,11 @@ public class PrintServiceImpl implements PrintService{
 			throws DataShareException, ApiNotAccessibleException, IOException, Exception {
 		DataShare dataShare = null;
 		dataShare = dataShareUtil.getDataShare(data, policyId, partnerId);
+		String dataShareUrl = dataShare.getUrl();
+		dataShareUrl = dataShareUrl.replace("http://", "https://");
+
 		// Sending DataShare URL to ActiveMQ
-		PrintMQData response = new PrintMQData("mosip.print.pdf.data", registrationId, printRefId, dataShare.getUrl());
+		PrintMQData response = new PrintMQData("mosip.print.pdf.data", registrationId, printRefId, dataShareUrl);
 		ResponseEntity<Object> entity = new ResponseEntity(response, HttpStatus.OK);
 		activePrintMQListener.sendToQueue(entity, 1, null);
 
@@ -696,7 +699,7 @@ public class PrintServiceImpl implements PrintService{
 		sEvent.setId(UUID.randomUUID().toString());
 		sEvent.setRequestId(requestId);
 		sEvent.setStatus("printing");
-		sEvent.setUrl(dataShare.getUrl());
+		sEvent.setUrl(dataShareUrl);
 		sEvent.setTimestamp(Timestamp.valueOf(currentDtime).toString());
 		creEvent.setPublishedOn(new DateTime().toString());
 		creEvent.setPublisher("PRINT_SERVICE");
