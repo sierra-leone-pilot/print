@@ -676,7 +676,7 @@ public class PrintServiceImpl implements PrintService{
 		dataShareUrl = dataShareUrl.replace("http://", "https://");
 
 		// Sending DataShare URL to ActiveMQ
-		PrintMQData response = new PrintMQData("mosip.print.pdf.data", registrationId, printRefId, dataShareUrl);
+		PrintMQData response = new PrintMQData("mosip.print.pdf.data", (registrationId ==null ? uin : registrationId), printRefId, dataShareUrl);
 		ResponseEntity<Object> entity = new ResponseEntity(response, HttpStatus.OK);
 		activePrintMQListener.sendToQueue(entity, 1, null);
 
@@ -687,7 +687,7 @@ public class PrintServiceImpl implements PrintService{
 		printTranactionDto.setStatusCode(PrintTransactionStatus.QUEUED.toString());
 		printTranactionDto.setCredentialTransactionId(requestId);
 		printTranactionDto.setLangCode(templateLang);
-		printTranactionDto.setReferenceId(registrationId);
+		printTranactionDto.setReferenceId(registrationId ==null ? uin : registrationId);
 		printTransactionRepository.create(printTranactionDto);
 		CredentialStatusEvent creEvent = new CredentialStatusEvent();
 		LocalDateTime currentDtime = DateUtils.getUTCCurrentDateTime();
