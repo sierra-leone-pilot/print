@@ -194,7 +194,8 @@ public class PrintServiceImpl implements PrintService{
 			byte[] pdfbytes = getDocuments(decodedCredential,
 					eventModel.getEvent().getData().get("credentialType").toString(), ecryptionPin,
 					eventModel.getEvent().getTransactionId(), "UIN", false, eventModel.getEvent().getId(),
-					eventModel.getEvent().getData().get("registrationId").toString(), eventModel.getEvent().getData().get("vid").toString()).get("uinPdf");
+					(eventModel.getEvent().getData().get("registrationId") == null ? null : eventModel.getEvent().getData().get("registrationId").toString()),
+					(eventModel.getEvent().getData().get("vid")== null ? null : eventModel.getEvent().getData().get("vid").toString())).get("uinPdf");
 			isPrinted = true; 
 		}catch (Exception e){
 			printLogger.error(e.getMessage() , e);
