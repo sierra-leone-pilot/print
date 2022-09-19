@@ -180,14 +180,6 @@ public class PrintServiceImpl implements PrintService{
 				credential = restApiClient.getApi(dataShareUri, String.class);
 			}
 
-		if (eventModel.getEvent().getData().get("registrationId") == null) {
-			printLogger.error(LoggerFileConstant.SESSIONID.toString(),
-					LoggerFileConstant.REGISTRATIONID.toString(), "RID" +
-							PlatformErrorMessages.PRT_RID_MISSING_EXCEPTION.name());
-			throw new IdentityNotFoundException(
-					PlatformErrorMessages.PRT_RID_MISSING_EXCEPTION.getMessage());
-		}
-
 			String ecryptionPin = eventModel.getEvent().getData().get("protectionKey").toString();
 			String decodedCredential = cryptoCoreUtil.decrypt(credential);
 			if (verifyCredentialsFlag){
@@ -263,7 +255,10 @@ public class PrintServiceImpl implements PrintService{
 			}
 			setTemplateAttributes(decryptedJson.toString(), attributes);
 			attributes.put(IdType.UIN.toString(), uin);
-			attributes.put(IdType.VID.toString(), vid);
+			if (vid != null)
+				attributes.put(IdType.VID.toString(), vid);
+			else
+				attributes.put(IdType.VID.toString(), "");
 
 			byte[] textFileByte = createTextFile(decryptedJson.toString());
 			byteMap.put(UIN_TEXT_FILE, textFileByte);
