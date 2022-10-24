@@ -280,7 +280,7 @@ public class PrintServiceImpl implements PrintService{
 		}
             // Send UIN Card Pdf to Email
             if (emailUINEnabled) {
-                sendUINInEmail(emailId, registrationId, attributes, pdfbytes);
+                sendUINInEmail(emailId, (registrationId ==null ? uin : registrationId), attributes, pdfbytes);
             }
 			printStatusUpdate(requestId, pdfbytes, credentialType, uin, refId, registrationId);
 			isTransactionSuccessful = true;
